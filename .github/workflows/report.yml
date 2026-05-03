@@ -1,0 +1,30 @@
+name: QA Daily Report
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 매일 17:00 KST (08:00 UTC)
+  workflow_dispatch:       # 수동 실행 버튼
+
+jobs:
+  send-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install gspread google-auth schedule requests
+
+      - name: Create credentials file
+        run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > qa-report-bot-495208-e89318293f59.json
+
+      - name: Run report bot
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: python -c "from report_bot import send_reports; send_reports()"
