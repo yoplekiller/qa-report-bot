@@ -3,4 +3,4 @@ import os
 CREDS_FILE = "qa-report-bot-495208-e89318293f59.json"
 MASTER_SPREADSHEET_ID = "19JI_EgmR6J0AgMcWLfXO3gdUT4KII45bhJew0q_-UQ4"
 SLACK_WEBHOOK_URL = os.environ.get("SLACK_WEBHOOK_URL")
-REPORT_TIME = "17:00"  # 매일 오후 5시 발송 (로컬 실행 시)
+REPORT_TIME = "17:00" 
