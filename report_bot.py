@@ -4,8 +4,10 @@ import gspread
 import requests
 import schedule
 import time
-from datetime import datetime, date
+from datetime import datetime, date, timezone, timedelta
 from google.oauth2.service_account import Credentials
+
+KST = timezone(timedelta(hours=9))
 from config import CREDS_FILE, MASTER_SPREADSHEET_ID, SLACK_WEBHOOK_URL, REPORT_TIME
 
 sys.stdout.reconfigure(encoding='utf-8')
@@ -26,7 +28,7 @@ def extract_spreadsheet_id(url):
 def get_active_projects(client):
     sheet = client.open_by_key(MASTER_SPREADSHEET_ID).get_worksheet(0)
     rows = sheet.get_all_values()[1:]  # 헤더 제외
-    today = date.today()
+    today = datetime.now(KST).date()
     active = []
 
     for row in rows:
@@ -85,7 +87,8 @@ def calc_rate(numerator, denominator):
 
 
 def build_slack_message(project_name, data, start_date="", end_date="", spreadsheet_id=""):
-    today = datetime.now().strftime("%Y-%m-%d")
+    now_kst = datetime.now(KST)
+    today = now_kst.strftime("%Y-%m-%d %H:%M KST")
     status_rows = parse_test_status(data)
 
     total_status = status_rows.get("전체", ["-"] * 10)
@@ -146,7 +149,7 @@ def build_slack_message(project_name, data, start_date="", end_date="", spreadsh
 
 
 def send_reports():
-    print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 리포트 전송 시작...")
+    print(f"[{datetime.now(KST).strftime('%Y-%m-%d %H:%M:%S KST')}] 리포트 전송 시작...")
     try:
         client = get_gspread_client()
         projects = get_active_projects(client)
