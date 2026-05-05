@@ -1,6 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 
+# Define the scope and credentials for accessing the Google Sheets API
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 CREDS_FILE = "qa-report-bot-495208-e89318293f59.json"
 SPREADSHEET_ID = "13TEp02M5wEpYi8_woMuv7BU2kXpNJIu_voVn-rU7OdE"
