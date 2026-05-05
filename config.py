@@ -1,4 +1,9 @@
 import os
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 CREDS_FILE = "qa-report-bot-495208-e89318293f59.json"
 MASTER_SPREADSHEET_ID = "19JI_EgmR6J0AgMcWLfXO3gdUT4KII45bhJew0q_-UQ4"

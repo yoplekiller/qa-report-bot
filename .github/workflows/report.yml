@@ -19,7 +19,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install gspread google-auth schedule requests
+        run: pip install -r requirements.txt
 
       - name: Create credentials file
         run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > qa-report-bot-495208-e89318293f59.json
