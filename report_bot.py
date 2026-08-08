@@ -14,12 +14,12 @@ sys.stdout.reconfigure(encoding='utf-8')
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
-
+# 구글 시트 클라이언트 생성
 def get_gspread_client():
     creds = Credentials.from_service_account_file(CREDS_FILE, scopes=SCOPES)
     return gspread.authorize(creds)
 
-
+# 구글 시트 URL에서 스프레드시트 ID 추출
 def extract_spreadsheet_id(url):
     match = re.search(r"/spreadsheets/d/([a-zA-Z0-9-_]+)", url)
     return match.group(1) if match else None
@@ -54,12 +54,12 @@ def get_active_projects(client):
 
     return active
 
-
+# 구글 시트에서 데이터 가져오기
 def get_sheet_data(client, spreadsheet_id):
     sheet = client.open_by_key(spreadsheet_id).get_worksheet(0)
     return sheet.get_all_values()
 
-
+#  데이터 파싱 및 슬랙 메시지 빌드
 def parse_test_status(data):
     rows = {}
     for row in data[2:5]:
